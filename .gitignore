@@ -1,0 +1,11 @@
+# personal notes / keys
+API key.txt
+*.key
+.env
+
+# editor / OS junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

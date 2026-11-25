@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>New Tab</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
+  </div>
+  <header class="top">
+    <div class="clock">
+      <div id="time">--:--</div>
+      <div id="date"></div>
+    </div>
+    <form id="search">
+      <input id="q" type="search" placeholder="Search the web" autocomplete="off" autofocus>
+    </form>
+    <div class="spacer-r"></div>
+  </header>
+
+  <div class="app">
+    <aside id="side" hidden>
+      <div class="create-row">
+        <button id="createBtn" class="create">+ Event</button>
+        <button id="createTaskBtn" class="create task-btn">+ Task</button>
+      </div>
+      <div class="side-title">Calendars</div>
+      <div id="calList"></div>
+      <div class="side-title" id="taskTitle" hidden>Task lists</div>
+      <div id="taskListList"></div>
+      <div class="side-foot">
+        <span class="keys">Right-click an event or task to make it blink. Click a task's circle to tick it off.<br>Keys: t today · d/w/m/a view · ←/→ · c event · n task</span>
+        <button id="signOutBtn" class="link">Sign out</button>
+      </div>
+    </aside>
+
+    <section class="cal">
+      <div class="toolbar" id="toolbar" hidden>
+        <button id="todayBtn">Today</button>
+        <button id="prevBtn" title="Previous">&#x2039;</button>
+        <button id="nextBtn" title="Next">&#x203A;</button>
+        <h2 id="rangeTitle"></h2>
+        <span id="spinner" hidden>&#x21bb;</span>
+        <div class="grow"></div>
+        <div class="seg" id="views">
+          <button data-view="day">Day</button>
+          <button data-view="week">Week</button>
+          <button data-view="month">Month</button>
+          <button data-view="agenda">Schedule</button>
+        </div>
+        <button id="refreshBtn" title="Refresh">&#x21bb;</button>
+        <a id="gcalOpen" href="https://calendar.google.com/" target="_blank" title="Open Google Calendar">&#x2197;</a>
+      </div>
+      <div id="view"></div>
+    </section>
+
+    <aside id="issues" class="issues">
+      <div class="is-head">
+        <span class="is-title">Issue Watcher</span>
+        <span id="isNew" class="is-new" hidden></span>
+        <span class="grow"></span>
+        <button id="isRefresh" class="is-btn" title="Refresh">&#x21bb;</button>
+        <button id="isGear" class="is-btn" title="Repos &amp; filters">&#x2699;</button>
+        <button id="isCollapse" class="is-btn" title="Hide panel">&#x203A;</button>
+      </div>
+      <form id="isSettings" class="is-settings" hidden>
+        <label>Repos to watch (one per line, owner/repo)
+          <textarea name="repos" rows="9" spellcheck="false"></textarea>
+        </label>
+        <label>Only these labels (optional, comma-separated)
+          <input name="labels" placeholder="good first issue, help wanted, bug" spellcheck="false">
+        </label>
+        <div class="actions">
+          <button type="button" id="isReset" class="link">Reset to the starter list</button>
+          <span class="grow"></span>
+          <button type="submit" class="primary">Save</button>
+        </div>
+      </form>
+      <div id="isStatus" class="is-status"></div>
+      <div id="isList" class="is-list"></div>
+    </aside>
+    <button id="isTab" class="is-tab" hidden>Issues</button>
+  </div>
+
+  <dialog id="editor">
+    <form id="evform">
+      <input name="summary" class="title-input" placeholder="Add title" autocomplete="off">
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="allDay"> All day</label>
+        <label class="check blink-check"><input type="checkbox" name="blink"> Blink in yellow</label>
+      </div>
+      <div class="when">
+        <input type="date" name="sd" required>
+        <input type="time" name="st" step="900">
+        <span>to</span>
+        <input type="date" name="ed" required>
+        <input type="time" name="et" step="900">
+      </div>
+      <label class="field">Calendar <select name="cal"></select></label>
+      <input name="location" placeholder="Add location" autocomplete="off">
+      <textarea name="description" placeholder="Add description" rows="3"></textarea>
+      <div id="edNote" class="note"></div>
+      <div class="actions">
+        <a id="edLink" target="_blank">Open in Google Calendar</a>
+        <span class="grow"></span>
+        <button type="button" id="delBtn" class="danger">Delete</button>
+        <button type="button" id="cancelBtn">Cancel</button>
+        <button type="submit" id="saveBtn" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="taskEditor">
+    <form id="taskform">
+      <input name="title" class="title-input" placeholder="Add task" autocomplete="off">
+      <label class="field">Due <input type="date" name="due" required></label>
+      <label class="field">List <select name="list"></select></label>
+      <textarea name="notes" placeholder="Add details" rows="3"></textarea>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="done"> Completed</label>
+        <label class="check blink-check"><input type="checkbox" name="blink"> Blink in yellow</label>
+      </div>
+      <div class="actions">
+        <span class="grow"></span>
+        <button type="button" id="tDelBtn" class="danger">Delete</button>
+        <button type="button" id="tCancelBtn">Cancel</button>
+        <button type="submit" id="tSaveBtn" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" hidden></div>
+
+  <script type="module" src="app.js"></script>
+  <script type="module" src="issues.js"></script>
+</body>
+</html>

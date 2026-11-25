@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Calendar New Tab",
+  "version": "2.1.0",
+  "description": "Your Google Calendar, Google Tasks and a GitHub issue feed on every new tab.",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "permissions": ["identity", "storage", "search"],
+  "icons": {
+    "128": "icon.png"
+  }
+}
