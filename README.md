@@ -14,7 +14,7 @@ It's a small browser extension: plain HTML, CSS and JavaScript, no build step an
 
 **Blinking reminders.** Right-click any event or task and it starts pulsing bright yellow. I use this for tests and deadlines I really can't miss. Right-click again to stop it.
 
-**Issue feed.** The right panel lists new open issues across a set of GitHub repos, newest first. Anything opened since you last looked gets a NEW tag. It comes with a list of robotics repos (ROS 2, PX4, ArduPilot, MoveIt, MuJoCo...) because that's what I watch. Change it with the gear icon.
+**Issue feed.** The right panel lists new open issues across a set of GitHub repos, newest first. Anything opened since you last looked gets a NEW tag. Hit the little × on an issue you've already checked and don't care about, and it stays hidden (there's an undo, and the gear menu can bring hidden ones back). It comes with a list of robotics repos (ROS 2, PX4, ArduPilot, MoveIt, MuJoCo...) because that's what I watch. Change it with the gear icon.
 
 There's also a search box that uses your browser's default search engine, a clock, and a few keyboard shortcuts.
 

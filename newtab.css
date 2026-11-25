@@ -412,3 +412,22 @@ input::-webkit-calendar-picker-indicator { filter: invert(.9); }
 .cid { width: 100%; margin-top: 8px; border-radius: 10px !important; padding: 8px 12px; font: 12px ui-monospace, Consolas, monospace; outline: none; }
 .cid:focus { border-color: rgba(156,195,255,.7); }
 .connect > button { display: block; margin: 0 auto; }
+
+/* hide (x) button on issue cards */
+.is-x {
+  width: 20px; height: 20px; padding: 0; margin-left: 2px; flex: none;
+  border-radius: 50%; border: 0; background: transparent; box-shadow: none;
+  color: var(--muted); font-size: 15px; line-height: 20px; text-align: center;
+  opacity: .55; transition: opacity .15s, background .15s, color .15s;
+}
+.is-item:hover .is-x { opacity: 1; }
+.is-x:hover { background: rgba(255, 120, 120, .22); color: #fff; }
+.is-item { transition: background .15s, border-color .15s, opacity .18s, transform .18s; }
+.is-item.leaving { opacity: 0; transform: translateX(24px); }
+.is-undo {
+  margin: 8px 10px 0; padding: 7px 12px; border-radius: 12px; font-size: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255, 255, 255, .08); border: 1px solid var(--line);
+}
+.is-undo .link { color: var(--accent); font-weight: 600; }
+.is-settings .actions { flex-wrap: wrap; row-gap: 6px; }

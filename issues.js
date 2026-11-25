@@ -32,11 +32,14 @@ const st = {
   collapsed: false,
   prevSeen: 0,         // issues newer than this get a NEW badge on this page
   items: [],
+  dismissed: new Set(), // issue ids you closed with the x
 };
 
 const save = () => chrome.storage.local.set({
   issuePrefs: { repos: st.repos, labels: st.labels, collapsed: st.collapsed },
 });
+// Keep the most recent 1000 so storage doesn't grow forever.
+const saveDismissed = () => chrome.storage.local.set({ issuesDismissed: [...st.dismissed].slice(-1000) });
 
 function ago(iso) {
   const s = (Date.now() - new Date(iso)) / 1000;
@@ -60,7 +63,7 @@ async function refresh() {
   $("#isRefresh").classList.add("spin");
   try {
     const url = new URL("https://api.github.com/search/issues");
-    url.search = new URLSearchParams({ q: buildQuery(), sort: "created", order: "desc", per_page: "40" });
+    url.search = new URLSearchParams({ q: buildQuery(), sort: "created", order: "desc", per_page: "60" });
     const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
     if (res.status === 403 || res.status === 429) {
       const reset = Number(res.headers.get("x-ratelimit-reset")) * 1000;
@@ -93,20 +96,27 @@ const repoOf = (i) => i.repository_url.split("/repos/")[1];
 
 function render() {
   const list = $("#isList");
-  if (!st.items.length) {
-    list.replaceChildren(h("div", { class: "is-empty" }, "No open issues found for these repos."));
+  const items = st.items.filter((i) => !st.dismissed.has(i.id));
+  updateHiddenCount();
+  if (!items.length) {
+    list.replaceChildren(h("div", { class: "is-empty" },
+      st.items.length ? "You've cleared everything. Nice." : "No open issues found for these repos."));
     $("#isNew").hidden = true;
     return;
   }
   let fresh = 0;
-  list.replaceChildren(...st.items.map((i) => {
+  list.replaceChildren(...items.map((i) => {
     const isNew = new Date(i.created_at).getTime() > st.prevSeen;
     if (isNew) fresh++;
     return h("a", { class: "is-item" + (isNew ? " new" : ""), href: i.html_url, target: "_blank", title: i.title },
       h("div", { class: "is-top" },
         h("span", { class: "is-repo" }, repoOf(i)),
         isNew ? h("span", { class: "is-badge" }, "NEW") : null,
-        h("span", { class: "is-time" }, ago(i.created_at))),
+        h("span", { class: "is-time" }, ago(i.created_at)),
+        h("button", {
+          class: "is-x", type: "button", title: "Hide this issue",
+          onclick: (ev) => { ev.preventDefault(); ev.stopPropagation(); dismiss(i, ev.currentTarget.closest(".is-item")); },
+        }, "\u00d7")),
       h("div", { class: "is-name" }, h("span", { class: "is-num" }, `#${i.number} `), i.title),
       h("div", { class: "is-meta" },
         h("span", {}, `@${i.user?.login || "?"}`),
@@ -117,6 +127,32 @@ function render() {
   $("#isNew").textContent = `${fresh} new`;
   $("#isNew").hidden = !fresh;
   $("#isTab").textContent = fresh ? `Issues · ${fresh}` : "Issues";
+}
+
+// ---- hide (x) with undo
+let undoTimer;
+function dismiss(issue, card) {
+  st.dismissed.add(issue.id);
+  saveDismissed();
+  card?.classList.add("leaving");
+  setTimeout(render, 180);
+  const bar = $("#isUndo");
+  bar.replaceChildren(
+    h("span", {}, `Hid #${issue.number}`),
+    h("button", {
+      type: "button", class: "link",
+      onclick: () => { st.dismissed.delete(issue.id); saveDismissed(); bar.hidden = true; render(); },
+    }, "Undo"));
+  bar.hidden = false;
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(() => (bar.hidden = true), 6000);
+}
+
+function updateHiddenCount() {
+  const n = st.items.filter((i) => st.dismissed.has(i.id)).length;
+  const btn = $("#isUnhide");
+  btn.textContent = `Show ${n} hidden issue${n === 1 ? "" : "s"} again`;
+  btn.hidden = !n;
 }
 
 function applyCollapsed() {
@@ -146,6 +182,12 @@ $("#isSettings").addEventListener("submit", (e) => {
 });
 $("#isReset").addEventListener("click", () => { $("#isSettings").repos.value = DEFAULT_REPOS.join("\n"); });
 
+$("#isUnhide").addEventListener("click", () => {
+  for (const i of st.items) st.dismissed.delete(i.id);
+  saveDismissed();
+  render();
+});
+
 $("#isGear").addEventListener("click", openSettings);
 $("#isRefresh").addEventListener("click", refresh);
 $("#isCollapse").addEventListener("click", () => { st.collapsed = true; save(); applyCollapsed(); });
@@ -153,8 +195,9 @@ $("#isTab").addEventListener("click", () => { st.collapsed = false; save(); appl
 
 // ---- boot
 (async () => {
-  const { issuePrefs, issuesSeen } = await chrome.storage.local.get(["issuePrefs", "issuesSeen"]);
+  const { issuePrefs, issuesSeen, issuesDismissed } = await chrome.storage.local.get(["issuePrefs", "issuesSeen", "issuesDismissed"]);
   if (issuePrefs) Object.assign(st, issuePrefs);
+  st.dismissed = new Set(issuesDismissed || []);
   // NEW = opened since you last opened a new tab (first run: last 24h).
   st.prevSeen = issuesSeen || Date.now() - 864e5;
   chrome.storage.local.set({ issuesSeen: Date.now() });
