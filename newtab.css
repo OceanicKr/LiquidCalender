@@ -268,20 +268,35 @@ input::-webkit-calendar-picker-indicator { filter: invert(.9); }
 /* Solid bright yellow the whole way through: flashes between neon yellow
    with a big glow and a slightly deeper yellow, text always black. */
 @keyframes hl-blink {
-  0% { background-color: rgb(255, 240, 40); box-shadow: 0 0 0 2px rgba(255, 245, 150, 1.0), 0 0 26.0px 4.0px rgba(255, 228, 0, 0.95); }
-  10% { background-color: rgb(254, 236, 36); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.95), 0 0 24.1px 3.6px rgba(255, 228, 0, 0.89); }
-  20% { background-color: rgb(250, 225, 26); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.83), 0 0 19.1px 2.6px rgba(255, 228, 0, 0.74); }
-  30% { background-color: rgb(245, 211, 14); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.67), 0 0 12.9px 1.4px rgba(255, 228, 0, 0.56); }
-  40% { background-color: rgb(241, 200, 4); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.55), 0 0 7.9px 0.4px rgba(255, 228, 0, 0.41); }
-  50% { background-color: rgb(240, 196, 0); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.5), 0 0 6.0px 0.0px rgba(255, 228, 0, 0.35); }
-  60% { background-color: rgb(241, 200, 4); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.55), 0 0 7.9px 0.4px rgba(255, 228, 0, 0.41); }
-  70% { background-color: rgb(245, 211, 14); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.67), 0 0 12.9px 1.4px rgba(255, 228, 0, 0.56); }
-  80% { background-color: rgb(250, 225, 26); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.83), 0 0 19.1px 2.6px rgba(255, 228, 0, 0.74); }
-  90% { background-color: rgb(254, 236, 36); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.95), 0 0 24.1px 3.6px rgba(255, 228, 0, 0.89); }
-  100% { background-color: rgb(255, 240, 40); box-shadow: 0 0 0 2px rgba(255, 245, 150, 1.0), 0 0 26.0px 4.0px rgba(255, 228, 0, 0.95); }
+  0% { background-color: rgb(255, 240, 60); box-shadow: 0 0 0 2px rgba(255, 245, 150, 1.0), 0 0 20.0px 3.0px rgba(255, 228, 0, 0.8); }
+  4% { background-color: rgb(255, 240, 60); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.99), 0 0 19.8px 3.0px rgba(255, 228, 0, 0.79); }
+  8% { background-color: rgb(255, 238, 59); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.98), 0 0 19.4px 2.9px rgba(255, 228, 0, 0.78); }
+  12% { background-color: rgb(255, 236, 57); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.95), 0 0 18.6px 2.7px rgba(255, 228, 0, 0.75); }
+  16% { background-color: rgb(255, 234, 55); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.91), 0 0 17.7px 2.5px rgba(255, 228, 0, 0.72); }
+  20% { background-color: rgb(255, 231, 53); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.86), 0 0 16.5px 2.3px rgba(255, 228, 0, 0.68); }
+  24% { background-color: rgb(255, 228, 51); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.81), 0 0 15.3px 2.1px rgba(255, 228, 0, 0.64); }
+  28% { background-color: rgb(255, 225, 48); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.76), 0 0 14.1px 1.8px rgba(255, 228, 0, 0.59); }
+  32% { background-color: rgb(255, 221, 46); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.71), 0 0 12.9px 1.6px rgba(255, 228, 0, 0.55); }
+  36% { background-color: rgb(255, 219, 44); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.67), 0 0 11.8px 1.4px rgba(255, 228, 0, 0.51); }
+  40% { background-color: rgb(255, 216, 42); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.64), 0 0 11.0px 1.2px rgba(255, 228, 0, 0.48); }
+  44% { background-color: rgb(255, 215, 41); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.61), 0 0 10.4px 1.1px rgba(255, 228, 0, 0.46); }
+  48% { background-color: rgb(255, 214, 40); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.6), 0 0 10.0px 1.0px rgba(255, 228, 0, 0.45); }
+  52% { background-color: rgb(255, 214, 40); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.6), 0 0 10.0px 1.0px rgba(255, 228, 0, 0.45); }
+  56% { background-color: rgb(255, 215, 41); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.61), 0 0 10.4px 1.1px rgba(255, 228, 0, 0.46); }
+  60% { background-color: rgb(255, 216, 42); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.64), 0 0 11.0px 1.2px rgba(255, 228, 0, 0.48); }
+  64% { background-color: rgb(255, 219, 44); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.67), 0 0 11.8px 1.4px rgba(255, 228, 0, 0.51); }
+  68% { background-color: rgb(255, 221, 46); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.71), 0 0 12.9px 1.6px rgba(255, 228, 0, 0.55); }
+  72% { background-color: rgb(255, 225, 48); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.76), 0 0 14.1px 1.8px rgba(255, 228, 0, 0.59); }
+  76% { background-color: rgb(255, 228, 51); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.81), 0 0 15.3px 2.1px rgba(255, 228, 0, 0.64); }
+  80% { background-color: rgb(255, 231, 53); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.86), 0 0 16.5px 2.3px rgba(255, 228, 0, 0.68); }
+  84% { background-color: rgb(255, 234, 55); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.91), 0 0 17.7px 2.5px rgba(255, 228, 0, 0.72); }
+  88% { background-color: rgb(255, 236, 57); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.95), 0 0 18.6px 2.7px rgba(255, 228, 0, 0.75); }
+  92% { background-color: rgb(255, 238, 59); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.98), 0 0 19.4px 2.9px rgba(255, 228, 0, 0.78); }
+  96% { background-color: rgb(255, 240, 60); box-shadow: 0 0 0 2px rgba(255, 245, 150, 0.99), 0 0 19.8px 3.0px rgba(255, 228, 0, 0.79); }
+  100% { background-color: rgb(255, 240, 60); box-shadow: 0 0 0 2px rgba(255, 245, 150, 1.0), 0 0 20.0px 3.0px rgba(255, 228, 0, 0.8); }
 }
 .ev.blink, .chip.blink, .ag-item.blink {
-  animation: hl-blink 3.2s linear infinite; /* slow, smooth beacon: the curve itself is eased */
+  animation: hl-blink 4.5s linear infinite; /* gentle sine-wave glow, not a blink */
   background-color: #ffee00;
   color: #000 !important;
   font-weight: 700;
