@@ -38,8 +38,27 @@ const st = {
 const save = () => chrome.storage.local.set({
   issuePrefs: { repos: st.repos, labels: st.labels, collapsed: st.collapsed },
 });
-// Keep the most recent 1000 so storage doesn't grow forever.
-const saveDismissed = () => chrome.storage.local.set({ issuesDismissed: [...st.dismissed].slice(-1000) });
+// Hidden issues are shared by every open new tab. Each change re-reads the saved
+// list and edits that, rather than writing this tab's copy back: otherwise an
+// older tab would overwrite what you hid in a newer one. Keeps the most recent
+// 1000 so storage doesn't grow forever.
+async function changeDismissed({ add = [], remove = [] }) {
+  const { issuesDismissed } = await chrome.storage.local.get("issuesDismissed");
+  const set = new Set(issuesDismissed || []);
+  for (const id of add) { set.delete(id); set.add(id); } // re-adding moves it to the newest end
+  for (const id of remove) set.delete(id);
+  st.dismissed = set;
+  await chrome.storage.local.set({ issuesDismissed: [...set].slice(-1000) });
+}
+
+// Hide/unhide in one tab shows up in the others straight away.
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local" || !changes.issuesDismissed) return;
+  const next = new Set(changes.issuesDismissed.newValue || []);
+  const same = next.size === st.dismissed.size && [...next].every((id) => st.dismissed.has(id));
+  st.dismissed = next;
+  if (!same) render(); // the tab you clicked in already shows it (and is mid fade-out)
+});
 
 function ago(iso) {
   const s = (Date.now() - new Date(iso)) / 1000;
@@ -133,7 +152,7 @@ function render() {
 let undoTimer;
 function dismiss(issue, card) {
   st.dismissed.add(issue.id);
-  saveDismissed();
+  changeDismissed({ add: [issue.id] });
   card?.classList.add("leaving");
   setTimeout(render, 180);
   const bar = $("#isUndo");
@@ -141,7 +160,7 @@ function dismiss(issue, card) {
     h("span", {}, `Hid #${issue.number}`),
     h("button", {
       type: "button", class: "link",
-      onclick: () => { st.dismissed.delete(issue.id); saveDismissed(); bar.hidden = true; render(); },
+      onclick: async () => { bar.hidden = true; await changeDismissed({ remove: [issue.id] }); render(); },
     }, "Undo"));
   bar.hidden = false;
   clearTimeout(undoTimer);
@@ -182,9 +201,8 @@ $("#isSettings").addEventListener("submit", (e) => {
 });
 $("#isReset").addEventListener("click", () => { $("#isSettings").repos.value = DEFAULT_REPOS.join("\n"); });
 
-$("#isUnhide").addEventListener("click", () => {
-  for (const i of st.items) st.dismissed.delete(i.id);
-  saveDismissed();
+$("#isUnhide").addEventListener("click", async () => {
+  await changeDismissed({ remove: st.items.map((i) => i.id) });
   render();
 });
 
