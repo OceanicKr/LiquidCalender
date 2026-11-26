@@ -1,4 +1,4 @@
-import { getToken, signOut, AuthError, getClientId, setClientId } from "./auth.js";
+import { getToken, signOut, AuthError, getClientId, setClientId, getSilentError } from "./auth.js";
 import * as api from "./api.js";
 
 // ---------------------------------------------------------------- helpers
@@ -313,6 +313,10 @@ function renderView() {
         h("div", { id: "authErr", class: "diag err" }))
     );
     getClientId().then((id) => { const el = $("#clientIdInput"); if (el && !el.value) el.value = id; });
+    getSilentError().then((e) => {
+      const box = $("#authErr");
+      if (e && box && !box.textContent) box.textContent = `Automatic sign-in failed ${new Date(e.at).toLocaleString()}: ${e.reason}`;
+    });
     return;
   }
   const oldBody = $(".tg-body");
