@@ -29,6 +29,34 @@ It isn't on the Chrome Web Store, so you load it yourself. That takes about a mi
 
 To have it show up when the browser starts, set **On startup** to **Open the New Tab page** in your browser's settings.
 
+### On Linux
+
+It's the same extension on Windows, macOS and Linux; nothing to build or install besides the browser. Tested with Brave on Ubuntu, and Chrome/Chromium work the same way.
+
+1. Clone it into a folder you'll keep, so updating is a `git pull`:
+   ```bash
+   git clone https://github.com/OceanicKr/LiquidCalender.git ~/calendar-newtab
+   ```
+   (Or use the ZIP like above.) If your browser is the Snap or Flatpak build, keep the folder somewhere plain inside your home folder, not a hidden `~/.something` folder, or the file picker can't see it.
+2. Open `brave://extensions` (or `chrome://extensions`), turn on **Developer mode**, click **Load unpacked** and pick that folder.
+3. Open a new tab and follow [Connecting Google](#connecting-google) below. If you already set it up on another computer, you don't need a new Google Cloud project: see [Using it on more than one computer](#using-it-on-more-than-one-computer).
+
+To update later:
+```bash
+cd ~/calendar-newtab && git pull
+```
+then click the reload icon on the extension in `brave://extensions`.
+
+**Event highlight looks dark olive instead of bright yellow?** You've got Brave/Chrome's experimental **Auto Dark Mode for Web Contents** flag on. It darkens every bright background on every page, and there's no way for a page to opt out. Set `brave://flags/#enable-force-dark` (or `chrome://flags/#enable-force-dark`) back to **Default** and relaunch. If you want dark websites, the Dark Reader extension does it without touching this page.
+
+### Using it on more than one computer
+
+Every install gets its own extension ID, and with it its own redirect URL (the `https://….chromiumapp.org/` address on the Connect screen). It changes between computers, and also if you move the folder.
+
+You can keep using the same Google Cloud project and client ID everywhere: open your client in Google Cloud (**Google Auth Platform → Clients**), click **Add URI** under **Authorized redirect URIs**, paste the new computer's redirect URL next to the old one, and save. Then paste the same client ID on the new computer and connect.
+
+Settings live in each browser, so hidden issues, your repo list and task highlights don't carry over between computers. Event highlights do, since they're saved on the Google event.
+
 ## Connecting Google
 
 Google doesn't let a random extension read your calendar, so you create your own free "OAuth client" in Google Cloud and paste its ID into the extension. No card is needed, and it takes about five minutes the first time.
@@ -49,7 +77,7 @@ The issue feed doesn't need any of this. It works as soon as the extension is lo
 
 ## Good to know
 
-- Sign-in tokens last about an hour and renew quietly in the background. If Google ever wants you to approve again, the Connect button comes back.
+- Sign-in tokens last about an hour and renew quietly in the background, also after a restart, as long as you're still signed in to Google in the browser. It remembers which account you connected, so being signed in to several Google accounts is fine. If Google ever wants you to approve again, the Connect button comes back with the reason underneath it.
 - While your Google Cloud app is in "Testing" mode, Google sometimes asks you to approve it again after a week or so. That's normal.
 - Event blinking is saved on the Google event itself, so it carries over to other computers. Task blinking is saved in your browser only, because Google Tasks has nowhere to store it.
 - Tasks without a due date aren't shown, since there's no day to put them on.

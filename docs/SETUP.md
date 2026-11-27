@@ -39,6 +39,12 @@ Google will probably say "Google hasn't verified this app". That's because it's 
 
 **`redirect_uri_mismatch`:** the redirect URL in Google Cloud doesn't exactly match the one on your new tab page. Copy it again from the page. Also check whether you moved the extension folder, since that changes the URL. After saving, Google can take a few minutes to catch up.
 
+**Setting it up on a second computer (say Windows and Linux):** the redirect URL is different on each computer. Don't make a new client: add the second computer's redirect URL to the same client as an extra **Authorized redirect URI**, and paste the same client ID there.
+
+**Can't find your project in Google Cloud:** it belongs to whichever Google account you were signed in with when you made it. Switch accounts with the avatar at the top right of the console.
+
+**It keeps asking you to connect:** look at the red line under the Connect button, it says why the automatic sign-in failed. If you click Connect once and pick the right account, it remembers that account for next time.
+
 **"Access blocked: app has not completed verification" / `access_denied`:** the account you picked isn't in **Test users**. Add it.
 
 **"Access blocked" by your administrator:** work and school Google accounts often block unverified apps, and only the admin can change that. Use a personal Gmail instead. To keep seeing your work calendar, share it with that Gmail from Google Calendar's settings.
